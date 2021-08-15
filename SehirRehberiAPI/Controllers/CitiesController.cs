@@ -35,6 +35,15 @@ namespace SehirRehberiAPI.Controllers
             return Ok(cityList);
         }
 
+        [HttpGet("getid")]
+        public ActionResult GetCityById(int id)
+        {
+            var cities = _appRepository.GetCityById(id);
+
+            var cityId = _mapper.Map<CityForDetailDto>(cities);
+            return Ok(cityId);
+        }
+
         [HttpPost("add")]
         public ActionResult Add([FromBody]City city)
         {
@@ -42,6 +51,8 @@ namespace SehirRehberiAPI.Controllers
             _appRepository.SaveAll();
             return Ok(city);
         }
+
+       
 
     }
 }

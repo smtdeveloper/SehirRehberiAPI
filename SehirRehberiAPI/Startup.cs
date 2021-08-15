@@ -39,6 +39,10 @@ namespace SehirRehberiAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SehirRehberiAPI", Version = "v1" });
             });
+            services.AddMvc().AddJsonOptions(opt =>
+            {
+                opt.JsonSerializerOptions.ReadCommentHandling = (System.Text.Json.JsonCommentHandling)Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
             services.AddCors();
             services.AddScoped<IAppRepository, AppRepository >(); 
         }
