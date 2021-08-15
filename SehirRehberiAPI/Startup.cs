@@ -7,12 +7,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using SehirRehberiAPI.DataAccess;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using SehirRehberiAPI.DataAccess;
 
 namespace SehirRehberiAPI
 {
@@ -30,14 +32,14 @@ namespace SehirRehberiAPI
         {
             services.AddDbContext<DataContext>(x => 
             x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            
+
+            services.AddAutoMapper();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SehirRehberiAPI", Version = "v1" });
             });
             services.AddCors();
-
             services.AddScoped<IAppRepository, AppRepository >(); 
         }
 
@@ -51,7 +53,12 @@ namespace SehirRehberiAPI
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SehirRehberiAPI v1"));
             }
 
-            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
+            app.UseCors(x => x.AllowAnyHeader());
+            app.UseCors(x => x.AllowAnyMethod());
+            app.UseCors(x => x.AllowAnyOrigin());
+            app.UseCors(x => x.AllowCredentials());
+
+            
 
             app.UseHttpsRedirection();
             app.UseRouting();
