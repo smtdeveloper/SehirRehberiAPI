@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SehirRehberiAPI.DataAccess;
 using SehirRehberiAPI.Dtos;
+using SehirRehberiAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,5 +34,14 @@ namespace SehirRehberiAPI.Controllers
           var cityList = _mapper.Map<List<CityForListDto>>(cities);
             return Ok(cityList);
         }
+
+        [HttpPost("add")]
+        public ActionResult Add([FromBody]City city)
+        {
+            _appRepository.Add(city);
+            _appRepository.SaveAll();
+            return Ok(city);
+        }
+
     }
 }
